@@ -45,6 +45,36 @@ func FindIndex[V any](dataArray []V, handler func(data V) bool) int {
 	return -1
 }
 
+// NOTE: return 0 value if not found
+func FindLast[V any](dataArray []V, handler func(data V) bool) (found V) {
+	if len(dataArray) == 0 {
+		return found
+	}
+
+	for i := len(dataArray) - 1; i >= 0; i-- {
+		if handler(dataArray[i]) {
+			return dataArray[i]
+		}
+	}
+
+	return found
+}
+
+// NOTE: returned -1 if not found
+func FindLastIndex[V any](dataArray []V, handler func(data V) bool) int {
+	if len(dataArray) == 0 {
+		return -1
+	}
+
+	for i := len(dataArray) - 1; i >= 0; i-- {
+		if handler(dataArray[i]) {
+			return i
+		}
+	}
+
+	return -1
+}
+
 func Map[V any](dataArray []V, handler func(data V) V) []V {
 	transformed := make([]V, 0)
 	if len(dataArray) == 0 {
