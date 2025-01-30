@@ -1,5 +1,17 @@
 package tslice
 
+func At[V any](dataArray []V, index int) V {
+	if index >= len(dataArray) || index < -len(dataArray) {
+		panic("should be index < len(dataArray)")
+	}
+
+	if index >= 0 {
+		return dataArray[index]
+	}
+
+	return dataArray[len(dataArray)+index]
+}
+
 func Fill[V any](dataArray []V, mask V, args ...int) []V {
 	filled := make([]V, 0)
 	if len(args) > 2 {
@@ -20,6 +32,10 @@ func Fill[V any](dataArray []V, mask V, args ...int) []V {
 
 	if from <= -1 || to <= 0 {
 		panic("should be from >= 0, to >= 1")
+	}
+
+	if from >= len(dataArray) || to > len(dataArray) {
+		panic("should be from < len(dataArray) && to <= len(dataArray)")
 	}
 
 	for i := 0; i < len(dataArray); i++ {

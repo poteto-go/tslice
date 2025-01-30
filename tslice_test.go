@@ -7,6 +7,55 @@ import (
 	"github.com/poteto-go/tslice"
 )
 
+func TestAt(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		index    int
+		expected int
+	}{
+		{"Test success At plus index", []int{1, 2, 3, 4}, 1, 2},
+		{"Test success At minus index", []int{1, 2, 3, 4}, -1, 4},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			result := tslice.At(it.targets, it.index)
+			if result != it.expected {
+				t.Errorf("unmatched | actual(%d) - expected(%d)", result, it.expected)
+			}
+		})
+	}
+}
+
+func TestAtPanicCase(t *testing.T) {
+	tests := []struct {
+		name    string
+		targets []int
+		index   int
+	}{
+		{"Test panic index >= length", []int{1, 2, 3, 4}, 4},
+		{"Test panic index < -length", []int{1, 2, 3, 4}, -5},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			var err error
+			defer func() {
+				if rec := recover(); rec != nil {
+					err = errors.New("error")
+				}
+			}()
+
+			tslice.At(it.targets, it.index)
+
+			if !errors.Is(err, errors.New("error")) {
+				t.Error("unmatched not panic")
+			}
+		})
+	}
+}
+
 func TestFill(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -51,10 +100,11 @@ func TestFillPanicCase(t *testing.T) {
 		to      int
 		add     int
 	}{
-		{"Test panic if args > 2", []int{1}, 1, 1, 1, 1},
-		{"Test panic if from >= to", []int{1}, 1, 2, 1, -1},
-		{"Test panic if from <= -1", []int{1}, 1, -1, 1, -1},
-		{"Test panic if to <= 0", []int{1}, 1, -1, 0, -1},
+		{"Test panic if args > 2", []int{1, 2}, 1, 1, 1, 1},
+		{"Test panic if from >= to", []int{1, 2, 3}, 1, 2, 1, -1},
+		{"Test panic if from <= -1", []int{1, 2}, 1, -1, 1, -1},
+		{"Test panic if to <= 0", []int{1, 2}, 1, -1, 0, -1},
+		{"Test panic if from >= length", []int{1}, 1, 2, 2, -1},
 	}
 
 	for _, it := range tests {
