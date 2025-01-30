@@ -1,6 +1,7 @@
 # tslice
 
 ## Func
+- [ ] `Fill`
 - [x] `Filter`
 - [x] `Find`: return (0 value, false) if not found
 - [x] `FindIndex`

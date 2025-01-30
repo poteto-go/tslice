@@ -1,5 +1,39 @@
 package tslice
 
+func Fill[V any](dataArray []V, mask V, args ...int) []V {
+	filled := make([]V, 0)
+	if len(args) > 2 {
+		panic("should be args <= 2")
+	}
+
+	from, to := 0, len(dataArray)
+	if len(args) >= 1 {
+		from = args[0]
+		if len(args) == 2 {
+			to = args[1]
+		}
+	}
+
+	if from >= to {
+		panic("should be from < to")
+	}
+
+	if from <= -1 || to <= 0 {
+		panic("should be from >= 0, to >= 1")
+	}
+
+	for i := 0; i < len(dataArray); i++ {
+		if i >= from && i < to {
+			filled = append(filled, mask)
+			continue
+		}
+
+		filled = append(filled, dataArray[i])
+	}
+
+	return filled
+}
+
 func Filter[V any](dataArray []V, handler func(data V) bool) []V {
 	filtered := make([]V, 0)
 	if len(dataArray) == 0 {
