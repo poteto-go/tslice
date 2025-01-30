@@ -2,8 +2,8 @@
 
 ## Func
 - [x] `Filter`
-- [x] `Find`
+- [x] `Find`: return (0 value, false) if not found
 - [x] `FindIndex`
-- [ ] `FindLast`
-- [ ] `FindLastIndex`
+- [x] `FindLast`: return (0 value, false) if not found
+- [x] `FindLastIndex`
 - [x] `Map`

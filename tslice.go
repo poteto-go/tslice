@@ -15,19 +15,19 @@ func Filter[V any](dataArray []V, handler func(data V) bool) []V {
 	return filtered
 }
 
-// NOTE: return 0 value if not found
-func Find[V any](dataArray []V, handler func(data V) bool) (found V) {
+// NOTE: return (0, false) if not found
+func Find[V any](dataArray []V, handler func(data V) bool) (found V, ok bool) {
 	if len(dataArray) == 0 {
-		return found
+		return found, ok
 	}
 
 	for _, data := range dataArray {
 		if handler(data) {
-			return data
+			return data, true
 		}
 	}
 
-	return found
+	return found, ok
 }
 
 // NOTE: returned -1 if not found
@@ -45,19 +45,19 @@ func FindIndex[V any](dataArray []V, handler func(data V) bool) int {
 	return -1
 }
 
-// NOTE: return 0 value if not found
-func FindLast[V any](dataArray []V, handler func(data V) bool) (found V) {
+// NOTE: return (0, false) if not found
+func FindLast[V any](dataArray []V, handler func(data V) bool) (found V, ok bool) {
 	if len(dataArray) == 0 {
-		return found
+		return found, ok
 	}
 
 	for i := len(dataArray) - 1; i >= 0; i-- {
 		if handler(dataArray[i]) {
-			return dataArray[i]
+			return dataArray[i], true
 		}
 	}
 
-	return found
+	return found, ok
 }
 
 // NOTE: returned -1 if not found

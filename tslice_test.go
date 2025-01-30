@@ -42,7 +42,7 @@ func TestFind(t *testing.T) {
 
 	for _, it := range tests {
 		t.Run(it.name, func(t *testing.T) {
-			found := tslice.Find(it.targets, func(data int) bool {
+			found, _ := tslice.Find(it.targets, func(data int) bool {
 				return data >= 1
 			})
 
@@ -90,7 +90,7 @@ func TestFindLast(t *testing.T) {
 
 	for _, it := range tests {
 		t.Run(it.name, func(t *testing.T) {
-			found := tslice.FindLast(it.targets, func(data int) bool {
+			found, _ := tslice.FindLast(it.targets, func(data int) bool {
 				return data >= 1
 			})
 
