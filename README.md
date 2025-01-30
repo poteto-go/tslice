@@ -2,3 +2,4 @@
 
 ## Func
 - [x] `Filter`
+- [x] `Map`

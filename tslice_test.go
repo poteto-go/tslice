@@ -23,7 +23,32 @@ func TestFilter(t *testing.T) {
 			})
 
 			if len(filtered) != it.expectLength {
-				t.Errorf("Unmatched filter: %v", filtered)
+				t.Errorf("unmatched filter: %v", filtered)
+			}
+		})
+	}
+}
+
+func TestMap(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		expected []int
+	}{
+		{"Test success *2 case", []int{0, 1, 2, 3}, []int{0, 2, 4, 6}},
+		{"Test 0 length case", []int{}, []int{}},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			transformed := tslice.Map(it.targets, func(data int) int {
+				return data * 2
+			})
+
+			for i := range transformed {
+				if transformed[i] != it.expected[i] {
+					t.Error("unmatched")
+				}
 			}
 		})
 	}
