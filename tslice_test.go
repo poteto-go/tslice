@@ -29,7 +29,7 @@ func TestFilter(t *testing.T) {
 	}
 }
 
-func TestFound(t *testing.T) {
+func TestFind(t *testing.T) {
 	tests := []struct {
 		name     string
 		targets  []int
@@ -43,6 +43,30 @@ func TestFound(t *testing.T) {
 	for _, it := range tests {
 		t.Run(it.name, func(t *testing.T) {
 			found := tslice.Find(it.targets, func(data int) bool {
+				return data >= 1
+			})
+
+			if found != it.expected {
+				t.Errorf("unmatched | actual(%d) - expected(%d)", found, it.expected)
+			}
+		})
+	}
+}
+
+func TestFindIndex(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		expected int
+	}{
+		{"Test success find", []int{0, 1, -1, 2}, 1},
+		{"Test 0 length case", []int{}, -1},
+		{"Test nothing clear rule", []int{-1}, -1},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			found := tslice.FindIndex(it.targets, func(data int) bool {
 				return data >= 1
 			})
 
