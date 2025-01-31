@@ -202,8 +202,33 @@ func Foreach[V any](dataArray []V, handler func(data V)) {
 	}
 }
 
-func Includes[V comparable](dataArray []V, data V) bool {
+// NOTE: Internal call slices.Contains
+func Includes[E comparable](dataArray []E, data E) bool {
 	return slices.Contains(dataArray, data)
+}
+
+// return -1 if not found
+func IndexOf[E comparable](dataArray []E, data E, startIndex ...int) int {
+	if len(startIndex) > 1 {
+		panic("should be len(startIndex) <= 1")
+	}
+
+	from := 0
+	if len(startIndex) == 1 {
+		from = startIndex[0]
+	}
+
+	if from >= len(dataArray) || from < 0 {
+		panic("should be 0 <= startIndex < len(dataArray)")
+	}
+
+	for i := from; i < len(dataArray); i++ {
+		if dataArray[i] == data {
+			return i
+		}
+	}
+
+	return -1
 }
 
 func Map[V any](dataArray []V, handler func(data V) V) []V {

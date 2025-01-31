@@ -16,7 +16,7 @@
 - [ ] `FlatMap`
 - [x] `ForEach`
 - [x] `Includes`
-- [ ] `IndexOf`
+- [x] `IndexOf`
 - [ ] `Join`
 - [ ] `Keys`
 - [ ] `LastIndexOf`
