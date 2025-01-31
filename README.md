@@ -12,4 +12,7 @@
 - [x] `FindIndex`
 - [x] `FindLast`: return (0 value, false) if not found
 - [x] `FindLastIndex`
+- [ ] `Flat`
+- [ ] `FlatMap`
+- [x] `ForEach`
 - [x] `Map`

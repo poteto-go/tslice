@@ -194,6 +194,12 @@ func FindLastIndex[V any](dataArray []V, handler func(data V) bool) int {
 	return -1
 }
 
+func Foreach[V any](dataArray []V, handler func(data V)) {
+	for _, data := range dataArray {
+		handler(data)
+	}
+}
+
 func Map[V any](dataArray []V, handler func(data V) V) []V {
 	transformed := make([]V, 0)
 	if len(dataArray) == 0 {
