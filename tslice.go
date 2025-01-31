@@ -67,6 +67,20 @@ func CopyWithin[V any](dataArray []V, startIndex int, args ...int) []V {
 	return copied
 }
 
+func Every[V any](dataArray []V, handler func(data V) bool) bool {
+	if len(dataArray) == 0 {
+		return true
+	}
+
+	for _, data := range dataArray {
+		if !handler(data) {
+			return false
+		}
+	}
+
+	return true
+}
+
 func Fill[V any](dataArray []V, mask V, args ...int) []V {
 	if len(args) > 2 {
 		panic("should be args <= 2")

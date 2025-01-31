@@ -86,6 +86,30 @@ func TestCopyWithin(t *testing.T) {
 	}
 }
 
+func TestEvery(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		expected bool
+	}{
+		{"Test true case", []int{1, 2, 3, 4, 5}, true},
+		{"Test 0 length array input return true", []int{}, true},
+		{"Test false case", []int{1, 2, 3, 4, -1}, false},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			result := tslice.Every(it.targets, func(data int) bool {
+				return data >= 0
+			})
+
+			if result != it.expected {
+				t.Errorf("unmatched: actual(%v) - expect(%v)", result, it.expected)
+			}
+		})
+	}
+}
+
 func TestFill(t *testing.T) {
 	tests := []struct {
 		name     string
