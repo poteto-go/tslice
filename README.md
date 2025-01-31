@@ -4,7 +4,7 @@
 - [x] `At`
 - [x] `Concat`
 - [x] `CopyWithin`
-- [ ] `Entries`
+- [x] `Entries`
 - [x] `Every`
 - [x] `Fill`
 - [x] `Filter`

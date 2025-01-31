@@ -110,6 +110,25 @@ func TestEvery(t *testing.T) {
 	}
 }
 
+func TestEntries(t *testing.T) {
+	dataArray := []string{"hello", "world", "!!"}
+	expectedKeys := []int{0, 1, 2}
+
+	iterators := tslice.Entries(dataArray)
+
+	cnt := 0
+	for i, v := range iterators {
+		if i != expectedKeys[cnt] {
+			t.Errorf("unmatched key: actual(%d) - expected(%d)", i, expectedKeys[cnt])
+		}
+
+		if v != dataArray[cnt] {
+			t.Errorf("Unmatched value: actual(%s) - expected(%s)", v, dataArray[cnt])
+		}
+		cnt++
+	}
+}
+
 func TestFill(t *testing.T) {
 	tests := []struct {
 		name     string

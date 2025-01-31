@@ -1,6 +1,9 @@
 package tslice
 
-import "slices"
+import (
+	"iter"
+	"slices"
+)
 
 func At[V any](dataArray []V, index int) V {
 	if index >= len(dataArray) || index < -len(dataArray) {
@@ -67,6 +70,11 @@ func CopyWithin[V any](dataArray []V, startIndex int, args ...int) []V {
 	}
 
 	return copied
+}
+
+// NOTE: internal call slices.All
+func Entries[V any](dataArray []V) iter.Seq2[int, V] {
+	return slices.All(dataArray)
 }
 
 func Every[V any](dataArray []V, handler func(data V) bool) bool {
