@@ -1,7 +1,6 @@
 package tslice_test
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/poteto-go/tslice"
@@ -28,34 +27,6 @@ func TestAt(t *testing.T) {
 	}
 }
 
-func TestAtPanicCase(t *testing.T) {
-	tests := []struct {
-		name    string
-		targets []int
-		index   int
-	}{
-		{"Test panic index >= length", []int{1, 2, 3, 4}, 4},
-		{"Test panic index < -length", []int{1, 2, 3, 4}, -5},
-	}
-
-	for _, it := range tests {
-		t.Run(it.name, func(t *testing.T) {
-			var err error
-			defer func() {
-				if rec := recover(); rec != nil {
-					err = errors.New("error")
-				}
-			}()
-
-			tslice.At(it.targets, it.index)
-
-			if !errors.Is(err, errors.New("error")) {
-				t.Error("unmatched not panic")
-			}
-		})
-	}
-}
-
 func TestConcat(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -73,6 +44,42 @@ func TestConcat(t *testing.T) {
 			for i := range it.expected {
 				if concat[i] != it.expected[i] {
 					t.Error("unmatched")
+				}
+			}
+		})
+	}
+}
+
+func TestCopyWithin(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		start    int
+		from     int
+		to       int
+		expected []int
+	}{
+		{"Test success from to CopyWithin single", []int{0, 1, -1, 2, -3, 4}, 1, 2, 3, []int{0, -1, -1, 2, -3, 4}},
+		{"Test success from to CopyWithin multi", []int{0, 1, -1, 2, -3, 4}, 1, 3, 5, []int{0, 2, -3, 2, -3, 4}},
+		{"Test success from to end", []int{0, 1, -1, 2, -3, 4}, 1, 3, -1, []int{0, 2, -3, 4, -3, 4}},
+		{"Test success targetIndex > lenght", []int{0, 1, -1, 2, -3, 4}, 4, 3, -1, []int{0, 1, -1, 2, 2, -3}},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+
+			copied := make([]int, 0)
+			if it.to >= 0 {
+				copied = tslice.CopyWithin(it.targets, it.start, it.from, it.to)
+			} else if it.from >= 0 {
+				copied = tslice.CopyWithin(it.targets, it.start, it.from)
+			} else {
+				copied = tslice.CopyWithin(it.targets, it.start)
+			}
+
+			for i := range copied {
+				if copied[i] != it.expected[i] {
+					t.Errorf("unmatched [%d]: actual(%d) - expected(%d)", i, copied[i], it.expected[i])
 				}
 			}
 		})
@@ -109,44 +116,6 @@ func TestFill(t *testing.T) {
 				if filled[i] != it.expected[i] {
 					t.Error("unmatched")
 				}
-			}
-		})
-	}
-}
-
-func TestFillPanicCase(t *testing.T) {
-	tests := []struct {
-		name    string
-		targets []int
-		mask    int
-		from    int
-		to      int
-		add     int
-	}{
-		{"Test panic if args > 2", []int{1, 2}, 1, 1, 1, 1},
-		{"Test panic if from >= to", []int{1, 2, 3}, 1, 2, 1, -1},
-		{"Test panic if from <= -1", []int{1, 2}, 1, -1, 1, -1},
-		{"Test panic if to <= 0", []int{1, 2}, 1, -1, 0, -1},
-		{"Test panic if from >= length", []int{1}, 1, 2, 2, -1},
-	}
-
-	for _, it := range tests {
-		t.Run(it.name, func(t *testing.T) {
-			var err error
-			defer func() {
-				if rec := recover(); rec != nil {
-					err = errors.New("error")
-				}
-			}()
-
-			if it.add >= 0 {
-				tslice.Fill(it.targets, it.mask, it.from, it.to, it.add)
-			} else {
-				tslice.Fill(it.targets, it.mask, it.from, it.to)
-			}
-
-			if !errors.Is(err, errors.New("error")) {
-				t.Error("unmatched not panic")
 			}
 		})
 	}

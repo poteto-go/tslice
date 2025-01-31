@@ -1,0 +1,114 @@
+package tslice_test
+
+import (
+	"errors"
+	"testing"
+
+	"github.com/poteto-go/tslice"
+)
+
+func TestAtPanicCase(t *testing.T) {
+	tests := []struct {
+		name    string
+		targets []int
+		index   int
+	}{
+		{"Test panic index >= length", []int{1, 2, 3, 4}, 4},
+		{"Test panic index < -length", []int{1, 2, 3, 4}, -5},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			var err error
+			defer func() {
+				if rec := recover(); rec != nil {
+					err = errors.New("error")
+				}
+			}()
+
+			tslice.At(it.targets, it.index)
+
+			if !errors.Is(err, errors.New("error")) {
+				t.Error("unmatched not panic")
+			}
+		})
+	}
+}
+
+func TestCopyWithinPanicCase(t *testing.T) {
+	tests := []struct {
+		name    string
+		targets []int
+		start   int
+		from    int
+		to      int
+		add     int
+	}{
+		{"Test panic if args > 2", []int{1, 2}, 1, 1, 1, 1},
+		{"Test panic if from >= to", []int{1, 2, 3}, 1, 2, 1, -1},
+		{"Test panic if from <= -1", []int{1, 2}, 1, -1, 1, -1},
+		{"Test panic if to <= 0", []int{1, 2}, 1, -1, 0, -1},
+		{"Test panic if from >= length", []int{1, 2}, 1, 2, 2, -1},
+		{"Test panic if start >= length", []int{1, 2}, 3, 0, 1, -1},
+		{"Test panic if start < 0", []int{1, 2}, -1, 0, 1, -1},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			var err error
+			defer func() {
+				if rec := recover(); rec != nil {
+					err = errors.New("error")
+				}
+			}()
+
+			if it.add >= 0 {
+				tslice.CopyWithin(it.targets, it.start, it.from, it.to, it.add)
+			} else {
+				tslice.CopyWithin(it.targets, it.start, it.from, it.to)
+			}
+
+			if !errors.Is(err, errors.New("error")) {
+				t.Error("unmatched not panic")
+			}
+		})
+	}
+}
+
+func TestFillPanicCase(t *testing.T) {
+	tests := []struct {
+		name    string
+		targets []int
+		mask    int
+		from    int
+		to      int
+		add     int
+	}{
+		{"Test panic if args > 2", []int{1, 2}, 1, 1, 1, 1},
+		{"Test panic if from >= to", []int{1, 2, 3}, 1, 2, 1, -1},
+		{"Test panic if from <= -1", []int{1, 2}, 1, -1, 1, -1},
+		{"Test panic if to <= 0", []int{1, 2}, 1, -1, 0, -1},
+		{"Test panic if from >= length", []int{1}, 1, 2, 2, -1},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			var err error
+			defer func() {
+				if rec := recover(); rec != nil {
+					err = errors.New("error")
+				}
+			}()
+
+			if it.add >= 0 {
+				tslice.Fill(it.targets, it.mask, it.from, it.to, it.add)
+			} else {
+				tslice.Fill(it.targets, it.mask, it.from, it.to)
+			}
+
+			if !errors.Is(err, errors.New("error")) {
+				t.Error("unmatched not panic")
+			}
+		})
+	}
+}

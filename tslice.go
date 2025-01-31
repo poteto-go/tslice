@@ -16,12 +16,63 @@ func Concat[V any](dataArray []V, dataArray2 []V) []V {
 	return append(dataArray, dataArray2...)
 }
 
+func CopyWithin[V any](dataArray []V, startIndex int, args ...int) []V {
+	if len(args) > 2 || len(args) == 0 {
+		panic("should be 0 < args < 2")
+	}
+
+	if startIndex < 0 || startIndex >= len(dataArray) {
+		panic("should be 0 <= startIndex < len(dataArray)")
+	}
+
+	copied := make([]V, 0)
+	if len(dataArray) == 0 {
+		return copied
+	}
+
+	from, to := 0, len(dataArray)
+	if len(args) >= 1 {
+		from = args[0]
+		if len(args) == 2 {
+			to = args[1]
+		}
+	}
+
+	if from >= to {
+		panic("should be from < to")
+	}
+
+	if from <= -1 || to <= 0 {
+		panic("should be from >= 0, to >= 1")
+	}
+
+	if from >= len(dataArray) || to > len(dataArray) {
+		panic("should be from < len(dataArray) && to <= len(dataArray)")
+	}
+
+	copied = append(copied, dataArray...)
+
+	targetIndex := startIndex
+	for m := from; m < to; m++ {
+		mask := dataArray[m]
+
+		copied[targetIndex] = mask
+
+		targetIndex++
+		if targetIndex >= len(dataArray) {
+			break
+		}
+	}
+
+	return copied
+}
+
 func Fill[V any](dataArray []V, mask V, args ...int) []V {
-	filled := make([]V, 0)
 	if len(args) > 2 {
 		panic("should be args <= 2")
 	}
 
+	filled := make([]V, 0)
 	from, to := 0, len(dataArray)
 	if len(args) >= 1 {
 		from = args[0]
