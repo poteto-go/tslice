@@ -15,4 +15,27 @@
 - [ ] `Flat`
 - [ ] `FlatMap`
 - [x] `ForEach`
+- [x] `Includes`
+- [ ] `IndexOf`
+- [ ] `Join`
+- [ ] `Keys`
+- [ ] `LastIndexOf`
 - [x] `Map`
+- [ ] `Pop`
+- [ ] `Push`
+- [ ] `Reduce`
+- [ ] `ReduceRight`
+- [ ] `Reverse`
+- [ ] `Shift`
+- [ ] `Slice`
+- [ ] `Some`
+- [ ] `Sort`
+- [ ] `Splice`
+- [ ] `ToLocalString`
+- [ ] `ToReversed`
+- [ ] `ToSorted`
+- [ ] `ToSpliced`
+- [ ] `ToString`
+- [ ] `UnShift`
+- [ ] `Values`
+- [ ] `With`

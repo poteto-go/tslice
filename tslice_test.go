@@ -277,6 +277,27 @@ func TestForeach(t *testing.T) {
 	}
 }
 
+func TestIncludes(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		target   int
+		expected bool
+	}{
+		{"Test true case", []int{1, 2, 3}, 1, true},
+		{"Test false case", []int{1, 2, 3}, 0, false},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			result := tslice.Includes(it.targets, it.target)
+			if result != it.expected {
+				t.Errorf("unmatched: actual(%v) - expected(%v)", result, it.expected)
+			}
+		})
+	}
+}
+
 func TestMap(t *testing.T) {
 	tests := []struct {
 		name     string

@@ -1,5 +1,7 @@
 package tslice
 
+import "slices"
+
 func At[V any](dataArray []V, index int) V {
 	if index >= len(dataArray) || index < -len(dataArray) {
 		panic("should be index < len(dataArray)")
@@ -198,6 +200,10 @@ func Foreach[V any](dataArray []V, handler func(data V)) {
 	for _, data := range dataArray {
 		handler(data)
 	}
+}
+
+func Includes[V comparable](dataArray []V, data V) bool {
+	return slices.Contains(dataArray, data)
 }
 
 func Map[V any](dataArray []V, handler func(data V) V) []V {
