@@ -12,6 +12,10 @@ func At[V any](dataArray []V, index int) V {
 	return dataArray[len(dataArray)+index]
 }
 
+func Concat[V any](dataArray []V, dataArray2 []V) []V {
+	return append(dataArray, dataArray2...)
+}
+
 func Fill[V any](dataArray []V, mask V, args ...int) []V {
 	filled := make([]V, 0)
 	if len(args) > 2 {

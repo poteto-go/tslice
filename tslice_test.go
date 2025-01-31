@@ -56,6 +56,29 @@ func TestAtPanicCase(t *testing.T) {
 	}
 }
 
+func TestConcat(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		targets2 []int
+		expected []int
+	}{
+		{"Test success concat", []int{1, 2}, []int{3, 4}, []int{1, 2, 3, 4}},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			concat := tslice.Concat(it.targets, it.targets2)
+
+			for i := range it.expected {
+				if concat[i] != it.expected[i] {
+					t.Error("unmatched")
+				}
+			}
+		})
+	}
+}
+
 func TestFill(t *testing.T) {
 	tests := []struct {
 		name     string
