@@ -148,3 +148,19 @@ func TestIndexOfPanicCase(t *testing.T) {
 		})
 	}
 }
+
+func TestPopPanicCase(t *testing.T) {
+	var err error
+	defer func() {
+		if rec := recover(); rec != nil {
+			err = errors.New("error")
+		}
+	}()
+
+	dataArray := []int{}
+	tslice.Pop(&dataArray)
+
+	if !errors.Is(err, errors.New("error")) {
+		t.Error("unmatched not panic")
+	}
+}

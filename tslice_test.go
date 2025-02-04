@@ -373,6 +373,31 @@ func TestMap(t *testing.T) {
 	}
 }
 
+func TestPop(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		expected int
+	}{
+		{"Test should update array", []int{1, 2, 3}, 3},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			n := len(it.targets)
+
+			popped := tslice.Pop(&it.targets)
+			if popped != it.expected {
+				t.Errorf("unmatched value: actual(%d) - expected(%d)", popped, it.expected)
+			}
+
+			if len(it.targets) != (n - 1) {
+				t.Error("unmatched size")
+			}
+		})
+	}
+}
+
 func TestPush(t *testing.T) {
 	tests := []struct {
 		name     string
