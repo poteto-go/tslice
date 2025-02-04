@@ -1,5 +1,19 @@
 # tslice
 
+This is type-script(java-script) array like slice for GoLang
+
+```bash
+go get -u github.com/poteto-go/tslice@latest
+```
+
+```go
+array := []int{0, 1, -1, 2}
+filtered := tslice.Filter(array, func(data int) bool {
+	return data >= 0
+})
+// => filtered = []int{0, 1, 2}
+```
+
 ## Func
 - [x] `At`
 - [x] `Concat`
