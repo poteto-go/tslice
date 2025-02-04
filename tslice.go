@@ -250,3 +250,36 @@ func Map[V any](dataArray []V, handler func(data V) V) []V {
 	}
 	return transformed
 }
+
+func Pop[V any](dataArray *[]V) V {
+	if len(*dataArray) == 0 {
+		panic("should be len(dataArray) >= 1")
+	}
+
+	lastValue := (*dataArray)[len(*dataArray)-1]
+
+	newArr := make([]V, len(*dataArray)-1)
+	copy(newArr, *dataArray)
+	*dataArray = newArr
+
+	return lastValue
+}
+
+func Push[V any](dataArray *[]V, add ...V) int {
+	if len(add) == 0 {
+		return len(*dataArray)
+	}
+
+	n := len(*dataArray)
+
+	// 配列を拡張
+	newArr := make([]V, n+len(add))
+	copy(newArr, *dataArray)
+	*dataArray = newArr
+
+	for i := 0; i < len(add); i++ {
+		(*dataArray)[n] = add[i]
+		n++
+	}
+	return n
+}
