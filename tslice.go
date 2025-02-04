@@ -250,3 +250,22 @@ func Map[V any](dataArray []V, handler func(data V) V) []V {
 	}
 	return transformed
 }
+
+func Push[V any](dataArray *[]V, add ...V) int {
+	if len(add) == 0 {
+		return len(*dataArray)
+	}
+
+	n := len(*dataArray)
+
+	// 配列を拡張
+	newArr := make([]V, n+len(add))
+	copy(newArr, *dataArray)
+	*dataArray = newArr
+
+	for i := 0; i < len(add); i++ {
+		(*dataArray)[n] = add[i]
+		n++
+	}
+	return n
+}
