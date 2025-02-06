@@ -164,3 +164,21 @@ func TestPopPanicCase(t *testing.T) {
 		t.Error("unmatched not panic")
 	}
 }
+
+func TestReducePanicCase(t *testing.T) {
+	var err error
+	defer func() {
+		if rec := recover(); rec != nil {
+			err = errors.New("error")
+		}
+	}()
+
+	dataArray := []int{}
+	tslice.Reduce(dataArray, func(acc int, cur int) int {
+		return acc + cur
+	}, 1, 2)
+
+	if !errors.Is(err, errors.New("error")) {
+		t.Error("unmatched not panic")
+	}
+}

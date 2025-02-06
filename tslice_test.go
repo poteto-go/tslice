@@ -424,3 +424,56 @@ func TestPush(t *testing.T) {
 		})
 	}
 }
+
+func TestReduce(t *testing.T) {
+	t.Run("Test int sum case", func(t *testing.T) {
+		// Arrange
+		targets := []int{1, 2, 3}
+		expected := 6
+
+		// Act
+		result := tslice.Reduce(targets, func(acc int, cur int) int {
+			return acc + cur
+		})
+
+		// Assert
+		if result != expected {
+			t.Errorf("unmatched int sum: actual(%d) - expected(%d)", result, expected)
+		}
+	})
+
+	t.Run("Test int sum with acc0 case", func(t *testing.T) {
+		// Arrange
+		targets := []int{1, 2, 3}
+		offset := 2
+		expected := 8
+
+		// Act
+		result := tslice.Reduce(targets, func(acc int, cur int) int {
+			return acc + cur
+		}, offset)
+
+		// Assert
+		if result != expected {
+			t.Errorf("unmatched int sum: actual(%d) - expected(%d)", result, expected)
+		}
+	})
+
+	t.Run("Test different type case V & T", func(t *testing.T) {
+		// Arrange
+		targets := []int{1, 2, 3}
+		expected := []int{1, 2, 3}
+
+		// Act
+		result := tslice.Reduce(targets, func(acc []int, cur int) []int {
+			return append(acc, cur)
+		})
+
+		// Assert
+		for i := range result {
+			if result[i] != expected[i] {
+				t.Errorf("unmatched int sum: actual(%d) - expected(%d)", result[i], expected[i])
+			}
+		}
+	})
+}

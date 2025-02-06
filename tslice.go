@@ -283,3 +283,21 @@ func Push[V any](dataArray *[]V, add ...V) int {
 	}
 	return n
 }
+
+func Reduce[V any, T any](dataArray []V, yield func(acc T, cur V) T, acc0 ...T) T {
+	if len(acc0) > 1 {
+		panic("should be len(acc0) <= 1")
+	}
+
+	var start T
+	if len(acc0) == 1 {
+		start = acc0[0]
+	}
+
+	now := start
+	for _, data := range dataArray {
+		now = yield(now, data)
+	}
+
+	return now
+}
