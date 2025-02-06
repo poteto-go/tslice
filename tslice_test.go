@@ -424,3 +424,161 @@ func TestPush(t *testing.T) {
 		})
 	}
 }
+
+func TestReduce(t *testing.T) {
+	t.Run("Test int sum case", func(t *testing.T) {
+		// Arrange
+		targets := []int{1, 2, 3}
+		expected := 6
+
+		// Act
+		result := tslice.Reduce(targets, func(acc int, cur int) int {
+			return acc + cur
+		})
+
+		// Assert
+		if result != expected {
+			t.Errorf("unmatched int sum: actual(%d) - expected(%d)", result, expected)
+		}
+	})
+
+	t.Run("Test int sum with acc0 case", func(t *testing.T) {
+		// Arrange
+		targets := []int{1, 2, 3}
+		offset := 2
+		expected := 8
+
+		// Act
+		result := tslice.Reduce(targets, func(acc int, cur int) int {
+			return acc + cur
+		}, offset)
+
+		// Assert
+		if result != expected {
+			t.Errorf("unmatched int sum: actual(%d) - expected(%d)", result, expected)
+		}
+	})
+
+	t.Run("Test custom case", func(t *testing.T) {
+		type User struct {
+			city string
+			age  int
+		}
+
+		// Arrange
+		users := []User{
+			{"Kawasaki", 10}, {"Yokohama", 11}, {"Kawasaki", 22},
+		}
+		expected := 32
+
+		// Act
+		result := tslice.Reduce(users, func(acc int, cur User) int {
+			if cur.city == "Kawasaki" {
+				return acc + cur.age
+			}
+			return acc + 0
+		})
+
+		// Assert
+		if result != expected {
+			t.Errorf("unmatched int sum: actual(%d) - expected(%d)", result, expected)
+		}
+	})
+
+	t.Run("Test different type case V & T", func(t *testing.T) {
+		// Arrange
+		targets := []int{1, 2, 3}
+		expected := []int{1, 2, 3}
+
+		// Act
+		result := tslice.Reduce(targets, func(acc []int, cur int) []int {
+			return append(acc, cur)
+		})
+
+		// Assert
+		for i := range result {
+			if result[i] != expected[i] {
+				t.Errorf("unmatched int sum: actual(%d) - expected(%d)", result[i], expected[i])
+			}
+		}
+	})
+}
+
+func TestReduceRight(t *testing.T) {
+	t.Run("Test int sum case", func(t *testing.T) {
+		// Arrange
+		targets := []int{1, 2, 3}
+		expected := 6
+
+		// Act
+		result := tslice.ReduceRight(targets, func(acc int, cur int) int {
+			return acc + cur
+		})
+
+		// Assert
+		if result != expected {
+			t.Errorf("unmatched int sum: actual(%d) - expected(%d)", result, expected)
+		}
+	})
+
+	t.Run("Test int sum with acc0 case", func(t *testing.T) {
+		// Arrange
+		targets := []int{1, 2, 3}
+		offset := 2
+		expected := 8
+
+		// Act
+		result := tslice.ReduceRight(targets, func(acc int, cur int) int {
+			return acc + cur
+		}, offset)
+
+		// Assert
+		if result != expected {
+			t.Errorf("unmatched int sum: actual(%d) - expected(%d)", result, expected)
+		}
+	})
+
+	t.Run("Test custom case", func(t *testing.T) {
+		type User struct {
+			city string
+			age  int
+		}
+
+		// Arrange
+		users := []User{
+			{"Kawasaki", 10}, {"Yokohama", 11}, {"Kawasaki", 22},
+		}
+		expected := 32
+
+		// Act
+		result := tslice.ReduceRight(users, func(acc int, cur User) int {
+			if cur.city == "Kawasaki" {
+				return acc + cur.age
+			}
+			return acc + 0
+		})
+
+		// Assert
+		if result != expected {
+			t.Errorf("unmatched int sum: actual(%d) - expected(%d)", result, expected)
+		}
+	})
+
+	t.Run("Test different type case V & T", func(t *testing.T) {
+		// Arrange
+		targets := []int{1, 2, 3}
+		expected := []int{3, 2, 1}
+
+		// Act
+		result := tslice.ReduceRight(targets, func(acc []int, cur int) []int {
+			return append(acc, cur)
+		})
+
+		// Assert
+		for i := range result {
+			if result[i] != expected[i] {
+				t.Errorf("unmatched int sum: actual(%d) - expected(%d)", result[i], expected[i])
+			}
+		}
+	})
+}

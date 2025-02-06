@@ -6,12 +6,39 @@ This is type-script(java-script) array like slice for GoLang
 go get -u github.com/poteto-go/tslice@latest
 ```
 
+
+## Examples
+
+### Filter
+
 ```go
 array := []int{0, 1, -1, 2}
 filtered := tslice.Filter(array, func(data int) bool {
 	return data >= 0
 })
 // => filtered = []int{0, 1, 2}
+```
+
+### Reduce
+
+```go
+type User struct {
+	city string
+	age  int
+}
+
+users := []User{
+	{"Kawasaki", 10}, {"Yokohama", 11}, {"Kawasaki", 22},
+}
+
+result := tslice.Reduce(users, func(acc int, cur User) int {
+	if cur.city == "Kawasaki" {
+		return acc + cur.age
+	}
+	
+	return acc + 0
+})
+// => 32
 ```
 
 ## Func
@@ -37,8 +64,8 @@ filtered := tslice.Filter(array, func(data int) bool {
 - [x] `Map`
 - [x] `Pop`
 - [x] `Push`
-- [ ] `Reduce`
-- [ ] `ReduceRight`
+- [x] `Reduce`
+- [x] `ReduceRight`
 - [ ] `Reverse`
 - [ ] `Shift`
 - [ ] `Slice`
@@ -53,3 +80,7 @@ filtered := tslice.Filter(array, func(data int) bool {
 - [ ] `UnShift`
 - [ ] `Values`
 - [ ] `With`
+
+## Latest test coverage (2025/02/06)
+
+ok      github.com/poteto-go/tslice     (cached)        coverage: 97.9% of statements
