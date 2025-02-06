@@ -37,7 +37,7 @@ filtered := tslice.Filter(array, func(data int) bool {
 - [x] `Map`
 - [x] `Pop`
 - [x] `Push`
-- [ ] `Reduce`
+- [x] `Reduce`
 - [ ] `ReduceRight`
 - [ ] `Reverse`
 - [ ] `Shift`
