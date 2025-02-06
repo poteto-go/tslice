@@ -459,6 +459,32 @@ func TestReduce(t *testing.T) {
 		}
 	})
 
+	t.Run("Test custom case", func(t *testing.T) {
+		type User struct {
+			city string
+			age  int
+		}
+
+		// Arrange
+		users := []User{
+			{"Kawasaki", 10}, {"Yokohama", 11}, {"Kawasaki", 22},
+		}
+		expected := 32
+
+		// Act
+		result := tslice.Reduce(users, func(acc int, cur User) int {
+			if cur.city == "Kawasaki" {
+				return acc + cur.age
+			}
+			return acc + 0
+		})
+
+		// Assert
+		if result != expected {
+			t.Errorf("unmatched int sum: actual(%d) - expected(%d)", result, expected)
+		}
+	})
+
 	t.Run("Test different type case V & T", func(t *testing.T) {
 		// Arrange
 		targets := []int{1, 2, 3}
