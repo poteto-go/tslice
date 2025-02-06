@@ -65,7 +65,7 @@ result := tslice.Reduce(users, func(acc int, cur User) int {
 - [x] `Pop`
 - [x] `Push`
 - [x] `Reduce`
-- [ ] `ReduceRight`
+- [x] `ReduceRight`
 - [ ] `Reverse`
 - [ ] `Shift`
 - [ ] `Slice`

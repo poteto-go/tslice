@@ -301,3 +301,21 @@ func Reduce[V any, T any](dataArray []V, yield func(acc T, cur V) T, acc0 ...T) 
 
 	return now
 }
+
+func ReduceRight[V any, T any](dataArray []V, yield func(acc T, cur V) T, acc0 ...T) T {
+	if len(acc0) > 1 {
+		panic("should be len(acc0) <= 1")
+	}
+
+	var start T
+	if len(acc0) == 1 {
+		start = acc0[0]
+	}
+
+	now := start
+	for i := len(dataArray) - 1; i >= 0; i-- {
+		now = yield(now, dataArray[i])
+	}
+
+	return now
+}
