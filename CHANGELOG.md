@@ -2,6 +2,10 @@
 
 ## 0.2.X
 
+### 0.2.1
+
+- FEAT: `ToString` by @poteto0 in #5
+
 ### 0.2.0
 
 - FEAT: `Reduce` by @poteto0 in #3
