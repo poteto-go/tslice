@@ -582,3 +582,26 @@ func TestReduceRight(t *testing.T) {
 		}
 	})
 }
+
+func TestToString(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []string
+		expected string
+	}{
+		{"test 0 length case", []string{}, ""},
+		{"test string array case", []string{"hello", "world"}, "hello, world"},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			result := tslice.ToString(it.targets)
+			if result != it.expected {
+				t.Errorf(
+					"unmatched actual(%s) - expected(%s)",
+					result, it.expected,
+				)
+			}
+		})
+	}
+}
