@@ -319,3 +319,18 @@ func ReduceRight[V any, T any](dataArray []V, yield func(acc T, cur V) T, acc0 .
 
 	return now
 }
+
+func ToString[V any](dataArray []V) string {
+	if len(dataArray) == 0 {
+		return ""
+	}
+
+	var text string
+	for i, data := range dataArray {
+		text += toString(data)
+		if i != len(dataArray)-1 {
+			text += ", "
+		}
+	}
+	return text
+}
