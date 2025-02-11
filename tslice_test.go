@@ -583,6 +583,80 @@ func TestReduceRight(t *testing.T) {
 	})
 }
 
+func TestSort(t *testing.T) {
+	type User struct {
+		Id   int
+		Name string
+	}
+
+	tests := []struct {
+		name     string
+		yield    func(l, r User) int
+		targets  []User
+		expected []User
+	}{
+		{"test 0 length case", func(l, r User) int { return 1 }, []User{}, []User{}},
+		{
+			"test user id sort case",
+			func(l, r User) int { return l.Id - r.Id },
+			[]User{{Id: 2, Name: "user2"}, {Id: 1, Name: "user1"}},
+			[]User{{Id: 1, Name: "user1"}, {Id: 2, Name: "user2"}},
+		},
+		{
+			"test user Name sort case",
+			func(l, r User) int {
+				if l.Name < r.Name {
+					return -1
+				}
+				return 1
+			},
+			[]User{{Id: 2, Name: "user2"}, {Id: 1, Name: "user1"}},
+			[]User{{Id: 1, Name: "user1"}, {Id: 2, Name: "user2"}},
+		},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			tslice.Sort(it.targets, it.yield)
+
+			for i := 0; i < len(it.expected); i++ {
+				if it.targets[i] != it.expected[i] {
+					t.Errorf(
+						"unmatched at(%d): actual(%v) - expected(%v)",
+						i, it.targets[i], it.expected[i],
+					)
+				}
+			}
+		})
+	}
+}
+
+func TestSortO(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		expected []int
+	}{
+		{"test can sort", []int{1, 3, 2}, []int{1, 2, 3}},
+		{"test 0 length case", []int{}, []int{}},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			tslice.SortO(it.targets)
+
+			for i := 0; i < len(it.expected); i++ {
+				if it.targets[i] != it.expected[i] {
+					t.Errorf(
+						"unmatched at(%d): actual(%d) - expected(%d)",
+						i, it.targets[i], it.expected[i],
+					)
+				}
+			}
+		})
+	}
+}
+
 func TestToString(t *testing.T) {
 	tests := []struct {
 		name     string
