@@ -76,7 +76,9 @@ result := tslice.Reduce(users, func(acc int, cur User) int {
 - [ ] `Splice`
 - [ ] `ToLocalString`
 - [ ] `ToReversed`
-- [ ] `ToSorted`
+- [x] `ToSorted`
+	- `ToSorted` w/ handler (which return int)
+	- `ToSortedO` w/o handler. You can use with `Ordered`.
 - [ ] `ToSpliced`
 - [x] `ToString`
 - [ ] `UnShift`

@@ -353,6 +353,24 @@ func SortO[O constraints.Ordered](dataArray []O) {
 	})
 }
 
+func ToSorted[V any](dataArray []V, yield func(left, right V) int) []V {
+	newArray := make([]V, len(dataArray))
+	copy(newArray, dataArray)
+
+	Sort(newArray, yield)
+
+	return newArray
+}
+
+func ToSortedO[O constraints.Ordered](dataArray []O) []O {
+	newArray := make([]O, len(dataArray))
+	copy(newArray, dataArray)
+
+	SortO(newArray)
+
+	return newArray
+}
+
 func ToString[V any](dataArray []V) string {
 	if len(dataArray) == 0 {
 		return ""

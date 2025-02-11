@@ -657,6 +657,92 @@ func TestSortO(t *testing.T) {
 	}
 }
 
+func TestToSorted(t *testing.T) {
+	type User struct {
+		Id   int
+		Name string
+	}
+
+	tests := []struct {
+		name     string
+		yield    func(l, r User) int
+		targets  []User
+		expected []User
+	}{
+		{
+			"test user id sort case",
+			func(l, r User) int { return l.Id - r.Id },
+			[]User{{Id: 2, Name: "user2"}, {Id: 1, Name: "user1"}},
+			[]User{{Id: 1, Name: "user1"}, {Id: 2, Name: "user2"}},
+		},
+		{
+			"test user Name sort case",
+			func(l, r User) int {
+				if l.Name < r.Name {
+					return -1
+				}
+				return 1
+			},
+			[]User{{Id: 2, Name: "user2"}, {Id: 1, Name: "user1"}},
+			[]User{{Id: 1, Name: "user1"}, {Id: 2, Name: "user2"}},
+		},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			results := tslice.ToSorted(it.targets, it.yield)
+
+			for i := 0; i < len(it.expected); i++ {
+				if results[i] != it.expected[i] {
+					t.Errorf(
+						"unmatched at(%d): actual(%v) - expected(%v)",
+						i, results[i], it.expected[i],
+					)
+				}
+
+				if it.targets[i] == it.expected[i] {
+					t.Errorf(
+						"unexpected matched at(%d): actual(%v) - expected(%v)",
+						i, it.targets[i], it.expected[i],
+					)
+				}
+			}
+		})
+	}
+}
+
+func TestToSortedO(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		expected []int
+	}{
+		{"test can sort & not change arg array", []int{3, 1, 2}, []int{1, 2, 3}},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			results := tslice.ToSortedO(it.targets)
+
+			for i := 0; i < len(it.expected); i++ {
+				if results[i] != it.expected[i] {
+					t.Errorf(
+						"unmatched at(%d): actual(%d) - expected(%d)",
+						i, results[i], it.expected[i],
+					)
+				}
+
+				if it.targets[i] == it.expected[i] {
+					t.Errorf(
+						"unexpected matched at(%d): actual(%d) - expected(%d)",
+						i, it.targets[i], it.expected[i],
+					)
+				}
+			}
+		})
+	}
+}
+
 func TestToString(t *testing.T) {
 	tests := []struct {
 		name     string
