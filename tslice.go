@@ -343,6 +343,15 @@ func Sort[V any](dataArray []V, yield func(left, right V) int) {
 	sort.SliceStable(dataArray, wrapper)
 }
 
+func ToSorted[V any](dataArray []V, yield func(left, right V) int) []V {
+	newArray := make([]V, len(dataArray))
+	copy(newArray, dataArray)
+
+	Sort(newArray, yield)
+
+	return newArray
+}
+
 func SortO[O constraints.Ordered](dataArray []O) {
 	if len(dataArray) == 0 {
 		return
@@ -351,15 +360,6 @@ func SortO[O constraints.Ordered](dataArray []O) {
 	sort.SliceStable(dataArray, func(i, j int) bool {
 		return (dataArray)[i] < (dataArray)[j]
 	})
-}
-
-func ToSorted[V any](dataArray []V, yield func(left, right V) int) []V {
-	newArray := make([]V, len(dataArray))
-	copy(newArray, dataArray)
-
-	Sort(newArray, yield)
-
-	return newArray
 }
 
 func ToSortedO[O constraints.Ordered](dataArray []O) []O {

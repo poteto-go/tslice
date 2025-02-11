@@ -631,32 +631,6 @@ func TestSort(t *testing.T) {
 	}
 }
 
-func TestSortO(t *testing.T) {
-	tests := []struct {
-		name     string
-		targets  []int
-		expected []int
-	}{
-		{"test can sort", []int{1, 3, 2}, []int{1, 2, 3}},
-		{"test 0 length case", []int{}, []int{}},
-	}
-
-	for _, it := range tests {
-		t.Run(it.name, func(t *testing.T) {
-			tslice.SortO(it.targets)
-
-			for i := 0; i < len(it.expected); i++ {
-				if it.targets[i] != it.expected[i] {
-					t.Errorf(
-						"unmatched at(%d): actual(%d) - expected(%d)",
-						i, it.targets[i], it.expected[i],
-					)
-				}
-			}
-		})
-	}
-}
-
 func TestToSorted(t *testing.T) {
 	type User struct {
 		Id   int
@@ -703,6 +677,32 @@ func TestToSorted(t *testing.T) {
 				if it.targets[i] == it.expected[i] {
 					t.Errorf(
 						"unexpected matched at(%d): actual(%v) - expected(%v)",
+						i, it.targets[i], it.expected[i],
+					)
+				}
+			}
+		})
+	}
+}
+
+func TestSortO(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		expected []int
+	}{
+		{"test can sort", []int{1, 3, 2}, []int{1, 2, 3}},
+		{"test 0 length case", []int{}, []int{}},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			tslice.SortO(it.targets)
+
+			for i := 0; i < len(it.expected); i++ {
+				if it.targets[i] != it.expected[i] {
+					t.Errorf(
+						"unmatched at(%d): actual(%d) - expected(%d)",
 						i, it.targets[i], it.expected[i],
 					)
 				}
