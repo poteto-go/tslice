@@ -70,17 +70,21 @@ result := tslice.Reduce(users, func(acc int, cur User) int {
 - [ ] `Shift`
 - [ ] `Slice`
 - [ ] `Some`
-- [ ] `Sort`
+- [x] `Sort`
+	- `Sort` w/ handler (which return int)
+	- `SortO` w/o handler. You can use with `Ordered`.
 - [ ] `Splice`
 - [ ] `ToLocalString`
 - [ ] `ToReversed`
-- [ ] `ToSorted`
+- [x] `ToSorted`
+	- `ToSorted` w/ handler (which return int)
+	- `ToSortedO` w/o handler. You can use with `Ordered`.
 - [ ] `ToSpliced`
 - [x] `ToString`
 - [ ] `UnShift`
 - [ ] `Values`
 - [ ] `With`
 
-## Latest test coverage (2025/02/06)
+## Latest test coverage (2025/02/11)
 
-ok      github.com/poteto-go/tslice     (cached)        coverage: 97.9% of statements
+ok      github.com/poteto-go/tslice     0.003s  coverage: 98.4% of statements

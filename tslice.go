@@ -3,6 +3,9 @@ package tslice
 import (
 	"iter"
 	"slices"
+	"sort"
+
+	"golang.org/x/exp/constraints"
 )
 
 func At[V any](dataArray []V, index int) V {
@@ -318,6 +321,54 @@ func ReduceRight[V any, T any](dataArray []V, yield func(acc T, cur V) T, acc0 .
 	}
 
 	return now
+}
+
+// * call w/ yield
+// * if you want call w/o yield
+// * use SortO instead
+// this internal calls sort.SliceStable()
+func Sort[V any](dataArray []V, yield func(left, right V) int) {
+	if len(dataArray) == 0 {
+		return
+	}
+
+	wrapper := func(i, j int) bool {
+		left := dataArray[i]
+		right := dataArray[j]
+
+		result := yield(left, right)
+		return result < 0
+	}
+
+	sort.SliceStable(dataArray, wrapper)
+}
+
+func ToSorted[V any](dataArray []V, yield func(left, right V) int) []V {
+	newArray := make([]V, len(dataArray))
+	copy(newArray, dataArray)
+
+	Sort(newArray, yield)
+
+	return newArray
+}
+
+func SortO[O constraints.Ordered](dataArray []O) {
+	if len(dataArray) == 0 {
+		return
+	}
+
+	sort.SliceStable(dataArray, func(i, j int) bool {
+		return (dataArray)[i] < (dataArray)[j]
+	})
+}
+
+func ToSortedO[O constraints.Ordered](dataArray []O) []O {
+	newArray := make([]O, len(dataArray))
+	copy(newArray, dataArray)
+
+	SortO(newArray)
+
+	return newArray
 }
 
 func ToString[V any](dataArray []V) string {
