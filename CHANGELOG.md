@@ -1,5 +1,14 @@
 # 0.X.X
 
+## 0.3.X
+
+### 0.3.0
+
+- FEAT: `Sort`, `SortO` by @poteto0 in #7
+- FEAT: `ToSorted`, `ToSortedO` by @poteto0 in #7
+- REF: change function's position on code by @poteto0 in #7
+- DOC: doc update by @poteto0 in #7
+
 ## 0.2.X
 
 ### 0.2.1
