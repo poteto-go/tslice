@@ -325,6 +325,25 @@ func Push[V any](dataArray *[]V, add ...V) int {
 	return n
 }
 
+func UnShift[V any](dataArray *[]V, add ...V) int {
+	if len(add) == 0 {
+		return len(*dataArray)
+	}
+
+	// 配列を拡張
+	newArr := make([]V, len(*dataArray)+len(add))
+	copy(newArr, *dataArray)
+	*dataArray = newArr
+
+	for i := len(*dataArray) - len(add) - 1; i >= 0; i-- {
+		(*dataArray)[i+len(add)] = (*dataArray)[i]
+	}
+
+	copy(*dataArray, add)
+
+	return len(*dataArray)
+}
+
 func Reduce[V any, T any](dataArray []V, yield func(acc T, cur V) T, acc0 ...T) T {
 	if len(acc0) > 1 {
 		panic("should be len(acc0) <= 1")
