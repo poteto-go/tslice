@@ -231,6 +231,30 @@ func FindLastIndex[V any](dataArray []V, yield func(data V) bool) int {
 	return -1
 }
 
+// return -1 if not found
+func LastIndexOf[E comparable](dataArray []E, data E, startIndex ...int) int {
+	if len(startIndex) > 1 {
+		panic("should be len(startIndex) <= 1")
+	}
+
+	from := len(dataArray) - 1
+	if len(startIndex) == 1 {
+		from = startIndex[0]
+	}
+
+	if from >= len(dataArray) || from < 0 {
+		panic("should be 0 <= startIndex < len(dataArray)")
+	}
+
+	for i := from; i >= 0; i-- {
+		if dataArray[i] == data {
+			return i
+		}
+	}
+
+	return -1
+}
+
 func ForEach[V any](dataArray []V, yield func(data V)) {
 	for _, data := range dataArray {
 		yield(data)

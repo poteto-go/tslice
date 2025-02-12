@@ -149,6 +149,42 @@ func TestIndexOfPanicCase(t *testing.T) {
 	}
 }
 
+func TestLastIndexOfPanicCase(t *testing.T) {
+	tests := []struct {
+		name    string
+		targets []int
+		offset  int
+		data    int
+		add     int
+	}{
+		{"Test over 2 args case", []int{1, 2, 3}, 0, 2, 1},
+		{"Test startIndex < 0 case", []int{1, 2, 3}, -1, 2, -1},
+		{"Test startIndex >= len(array) case", []int{1, 2, 3}, 5, 2, -1},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			var err error
+			defer func() {
+				if rec := recover(); rec != nil {
+					err = errors.New("error")
+				}
+			}()
+
+			if it.offset < -1 {
+				tslice.LastIndexOf(it.targets, it.data)
+			} else if it.add < 0 {
+				tslice.LastIndexOf(it.targets, it.data, it.offset)
+			} else {
+				tslice.LastIndexOf(it.targets, it.data, it.offset, it.add)
+			}
+			if !errors.Is(err, errors.New("error")) {
+				t.Error("unmatched not panic")
+			}
+		})
+	}
+}
+
 func TestPopPanicCase(t *testing.T) {
 	var err error
 	defer func() {
