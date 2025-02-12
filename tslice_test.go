@@ -129,6 +129,20 @@ func TestEntries(t *testing.T) {
 	}
 }
 
+func TestValues(t *testing.T) {
+	dataArray := []string{"hello", "world", "!!"}
+
+	iterators := tslice.Values(dataArray)
+
+	cnt := 0
+	for v := range iterators {
+		if v != dataArray[cnt] {
+			t.Errorf("Unmatched value: actual(%s) - expected(%s)", v, dataArray[cnt])
+		}
+		cnt++
+	}
+}
+
 func TestFill(t *testing.T) {
 	tests := []struct {
 		name     string

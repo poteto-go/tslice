@@ -82,7 +82,7 @@ result := tslice.Reduce(users, func(acc int, cur User) int {
 - [ ] `ToSpliced`
 - [x] `ToString`
 - [x] `UnShift`
-- [ ] `Values`
+- [x] `Values`
 - [ ] `With`
 
 ## Latest test coverage (2025/02/11)

@@ -80,6 +80,11 @@ func Entries[V any](dataArray []V) iter.Seq2[int, V] {
 	return slices.All(dataArray)
 }
 
+// NOTE: internal call slices.Values
+func Values[V any](dataArray []V) iter.Seq[V] {
+	return slices.Values(dataArray)
+}
+
 func Every[V any](dataArray []V, yield func(data V) bool) bool {
 	if len(dataArray) == 0 {
 		return true
