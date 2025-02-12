@@ -347,6 +347,17 @@ func ReduceRight[V any, T any](dataArray []V, yield func(acc T, cur V) T, acc0 .
 	return now
 }
 
+func Reverse[V any](dataArray *[]V) {
+	if len(*dataArray) == 0 {
+		return
+	}
+
+	for i := 0; i < len(*dataArray)/2; i++ {
+		rightId := len(*dataArray) - i - 1
+		(*dataArray)[i], (*dataArray)[rightId] = (*dataArray)[rightId], (*dataArray)[i]
+	}
+}
+
 // * call w/ yield
 // * if you want call w/o yield
 // * use SortO instead

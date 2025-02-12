@@ -614,6 +614,34 @@ func TestReduceRight(t *testing.T) {
 	})
 }
 
+func TestReverse(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		expected []int
+	}{
+		{"test 0 length case", []int{}, []int{}},
+		{"test odd reverse case", []int{1, 2, 3}, []int{3, 2, 1}},
+		{"test even reverse case", []int{1, 2, 3, 4}, []int{4, 3, 2, 1}},
+		{"test 1 length case", []int{1}, []int{1}},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			tslice.Reverse(&it.targets)
+
+			for i := 0; i < len(it.expected); i++ {
+				if it.targets[i] != it.expected[i] {
+					t.Errorf(
+						"unmatched at(%d): actual(%d) - expected(%d)",
+						i, it.targets[i], it.expected[i],
+					)
+				}
+			}
+		})
+	}
+}
+
 func TestSort(t *testing.T) {
 	type User struct {
 		Id   int
