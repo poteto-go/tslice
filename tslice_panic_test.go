@@ -236,3 +236,19 @@ func TestReduceRightPanicCase(t *testing.T) {
 		t.Error("unmatched not panic")
 	}
 }
+
+func TestShiftPanicCase(t *testing.T) {
+	var err error
+	defer func() {
+		if rec := recover(); rec != nil {
+			err = errors.New("error")
+		}
+	}()
+
+	dataArray := []int{}
+	tslice.Shift(&dataArray)
+
+	if !errors.Is(err, errors.New("error")) {
+		t.Error("unmatched not panic")
+	}
+}

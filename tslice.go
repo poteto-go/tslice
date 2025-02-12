@@ -415,6 +415,20 @@ func ToSortedO[O constraints.Ordered](dataArray []O) []O {
 	return newArray
 }
 
+func Shift[V any](dataArray *[]V) V {
+	if len(*dataArray) == 0 {
+		panic("should be len(dataArray) >= 1")
+	}
+
+	firstValue := (*dataArray)[0]
+
+	newArr := make([]V, len(*dataArray)-1)
+	copy(newArr, (*dataArray)[1:len(*dataArray)])
+	*dataArray = newArr
+
+	return firstValue
+}
+
 func ToString[V any](dataArray []V) string {
 	if len(dataArray) == 0 {
 		return ""
