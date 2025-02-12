@@ -235,6 +235,37 @@ func TestFindIndex(t *testing.T) {
 	}
 }
 
+func TestIndexOf(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		offset   int
+		data     int
+		expected int
+	}{
+		{"Test find case from 0", []int{1, 2, 3}, -1, 2, 1},
+		{"Test find case form offset", []int{1, 2, 3, 2, 5}, 2, 2, 3},
+		{"Test not found case", []int{1, 2, 3}, -1, 4, -1},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			result := func() int {
+				switch {
+				case it.offset < 0:
+					return tslice.IndexOf(it.targets, it.data)
+				default:
+					return tslice.IndexOf(it.targets, it.data, it.offset)
+				}
+			}()
+
+			if result != it.expected {
+				t.Errorf("unmatched actual(%d) - expected(%d)", result, it.expected)
+			}
+		})
+	}
+}
+
 func TestFindLast(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -312,37 +343,6 @@ func TestIncludes(t *testing.T) {
 			result := tslice.Includes(it.targets, it.target)
 			if result != it.expected {
 				t.Errorf("unmatched: actual(%v) - expected(%v)", result, it.expected)
-			}
-		})
-	}
-}
-
-func TestIndexOf(t *testing.T) {
-	tests := []struct {
-		name     string
-		targets  []int
-		offset   int
-		data     int
-		expected int
-	}{
-		{"Test find case from 0", []int{1, 2, 3}, -1, 2, 1},
-		{"Test find case form offset", []int{1, 2, 3, 2, 5}, 2, 2, 3},
-		{"Test not found case", []int{1, 2, 3}, -1, 4, -1},
-	}
-
-	for _, it := range tests {
-		t.Run(it.name, func(t *testing.T) {
-			result := func() int {
-				switch {
-				case it.offset < 0:
-					return tslice.IndexOf(it.targets, it.data)
-				default:
-					return tslice.IndexOf(it.targets, it.data, it.offset)
-				}
-			}()
-
-			if result != it.expected {
-				t.Errorf("unmatched actual(%d) - expected(%d)", result, it.expected)
 			}
 		})
 	}
