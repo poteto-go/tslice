@@ -429,6 +429,36 @@ func TestPop(t *testing.T) {
 	}
 }
 
+func TestShift(t *testing.T) {
+	tests := []struct {
+		name          string
+		targets       []int
+		expected      int
+		expectShifted []int
+	}{
+		{"test can shift", []int{1, 2, 3}, 1, []int{2, 3}},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			result := tslice.Shift(&it.targets)
+
+			if result != it.expected {
+				t.Errorf("unmatched: actual(%d) - expected(%d)", result, it.expected)
+			}
+
+			for i := 0; i < len(it.targets); i++ {
+				if it.targets[i] != it.expectShifted[i] {
+					t.Errorf(
+						"unmatched at(%d): actual(%d) - expected(%d)",
+						i, it.targets[i], it.expectShifted[i],
+					)
+				}
+			}
+		})
+	}
+}
+
 func TestPush(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -833,36 +863,6 @@ func TestToSortedO(t *testing.T) {
 					t.Errorf(
 						"unexpected matched at(%d): actual(%d) - expected(%d)",
 						i, it.targets[i], it.expected[i],
-					)
-				}
-			}
-		})
-	}
-}
-
-func TestShift(t *testing.T) {
-	tests := []struct {
-		name          string
-		targets       []int
-		expected      int
-		expectShifted []int
-	}{
-		{"test can shift", []int{1, 2, 3}, 1, []int{2, 3}},
-	}
-
-	for _, it := range tests {
-		t.Run(it.name, func(t *testing.T) {
-			result := tslice.Shift(&it.targets)
-
-			if result != it.expected {
-				t.Errorf("unmatched: actual(%d) - expected(%d)", result, it.expected)
-			}
-
-			for i := 0; i < len(it.targets); i++ {
-				if it.targets[i] != it.expectShifted[i] {
-					t.Errorf(
-						"unmatched at(%d): actual(%d) - expected(%d)",
-						i, it.targets[i], it.expectShifted[i],
 					)
 				}
 			}
