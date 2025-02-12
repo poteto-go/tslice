@@ -358,6 +358,15 @@ func Reverse[V any](dataArray *[]V) {
 	}
 }
 
+func ToReversed[V any](dataArray []V) []V {
+	newArray := make([]V, len(dataArray))
+	copy(newArray, dataArray)
+
+	Reverse(&newArray)
+
+	return newArray
+}
+
 // * call w/ yield
 // * if you want call w/o yield
 // * use SortO instead
