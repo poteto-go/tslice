@@ -85,6 +85,6 @@ result := tslice.Reduce(users, func(acc int, cur User) int {
 - [x] `Values`
 - [ ] `With`
 
-## Latest test coverage (2025/02/11)
+## Latest test coverage (2025/02/12)
 
-ok      github.com/poteto-go/tslice     0.003s  coverage: 98.4% of statements
+ok      github.com/poteto-go/tslice     (cached)        coverage: 98.7% of statements

@@ -1,5 +1,16 @@
 # 0.X.X
 
+## 0.4.X
+
+### 0.4.0
+
+- FEAT: `lastIndexOf` by @poteto0 in #8
+- FEAT: `Reverse`, `ToReversed` by @poteto0 in #8
+- FEAT: `Shift`, `UnShift` by @poteto0 in #8
+- FEAT: `Values` by @poteto0 in #8
+- REF: change pos of func by @poteto0 in #8
+- TYPO: fix typo by @poteto0 in #8
+
 ## 0.3.X
 
 ### 0.3.0
