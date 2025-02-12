@@ -231,7 +231,7 @@ func FindLastIndex[V any](dataArray []V, yield func(data V) bool) int {
 	return -1
 }
 
-func Foreach[V any](dataArray []V, yield func(data V)) {
+func ForEach[V any](dataArray []V, yield func(data V)) {
 	for _, data := range dataArray {
 		yield(data)
 	}

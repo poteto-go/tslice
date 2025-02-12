@@ -314,11 +314,11 @@ func TestFindLastIndex(t *testing.T) {
 	}
 }
 
-func TestForeach(t *testing.T) {
+func TestForEach(t *testing.T) {
 	cnt := 0
 
 	targets := []int{1, 2, 3}
-	tslice.Foreach(targets, func(data int) {
+	tslice.ForEach(targets, func(data int) {
 		cnt = data
 	})
 
