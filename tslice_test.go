@@ -129,6 +129,20 @@ func TestEntries(t *testing.T) {
 	}
 }
 
+func TestValues(t *testing.T) {
+	dataArray := []string{"hello", "world", "!!"}
+
+	iterators := tslice.Values(dataArray)
+
+	cnt := 0
+	for v := range iterators {
+		if v != dataArray[cnt] {
+			t.Errorf("Unmatched value: actual(%s) - expected(%s)", v, dataArray[cnt])
+		}
+		cnt++
+	}
+}
+
 func TestFill(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -235,6 +249,37 @@ func TestFindIndex(t *testing.T) {
 	}
 }
 
+func TestIndexOf(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		offset   int
+		data     int
+		expected int
+	}{
+		{"Test find case from 0", []int{1, 2, 3}, -1, 2, 1},
+		{"Test find case form offset", []int{1, 2, 3, 2, 5}, 2, 2, 3},
+		{"Test not found case", []int{1, 2, 3}, -1, 4, -1},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			result := func() int {
+				switch {
+				case it.offset < 0:
+					return tslice.IndexOf(it.targets, it.data)
+				default:
+					return tslice.IndexOf(it.targets, it.data, it.offset)
+				}
+			}()
+
+			if result != it.expected {
+				t.Errorf("unmatched actual(%d) - expected(%d)", result, it.expected)
+			}
+		})
+	}
+}
+
 func TestFindLast(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -283,11 +328,42 @@ func TestFindLastIndex(t *testing.T) {
 	}
 }
 
-func TestForeach(t *testing.T) {
+func TestLastIndexOf(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		offset   int
+		data     int
+		expected int
+	}{
+		{"Test find case from 0", []int{1, 2, 3}, -1, 2, 1},
+		{"Test find case form offset", []int{1, 2, 3, 2, 5}, 2, 2, 1},
+		{"Test not found case", []int{1, 2, 3}, -1, 4, -1},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			result := func() int {
+				switch {
+				case it.offset < 0:
+					return tslice.LastIndexOf(it.targets, it.data)
+				default:
+					return tslice.LastIndexOf(it.targets, it.data, it.offset)
+				}
+			}()
+
+			if result != it.expected {
+				t.Errorf("unmatched actual(%d) - expected(%d)", result, it.expected)
+			}
+		})
+	}
+}
+
+func TestForEach(t *testing.T) {
 	cnt := 0
 
 	targets := []int{1, 2, 3}
-	tslice.Foreach(targets, func(data int) {
+	tslice.ForEach(targets, func(data int) {
 		cnt = data
 	})
 
@@ -312,37 +388,6 @@ func TestIncludes(t *testing.T) {
 			result := tslice.Includes(it.targets, it.target)
 			if result != it.expected {
 				t.Errorf("unmatched: actual(%v) - expected(%v)", result, it.expected)
-			}
-		})
-	}
-}
-
-func TestIndexOf(t *testing.T) {
-	tests := []struct {
-		name     string
-		targets  []int
-		offset   int
-		data     int
-		expected int
-	}{
-		{"Test find case from 0", []int{1, 2, 3}, -1, 2, 1},
-		{"Test find case form offset", []int{1, 2, 3, 2, 5}, 2, 2, 3},
-		{"Test not found case", []int{1, 2, 3}, -1, 4, -1},
-	}
-
-	for _, it := range tests {
-		t.Run(it.name, func(t *testing.T) {
-			result := func() int {
-				switch {
-				case it.offset < 0:
-					return tslice.IndexOf(it.targets, it.data)
-				default:
-					return tslice.IndexOf(it.targets, it.data, it.offset)
-				}
-			}()
-
-			if result != it.expected {
-				t.Errorf("unmatched actual(%d) - expected(%d)", result, it.expected)
 			}
 		})
 	}
@@ -398,6 +443,36 @@ func TestPop(t *testing.T) {
 	}
 }
 
+func TestShift(t *testing.T) {
+	tests := []struct {
+		name          string
+		targets       []int
+		expected      int
+		expectShifted []int
+	}{
+		{"test can shift", []int{1, 2, 3}, 1, []int{2, 3}},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			result := tslice.Shift(&it.targets)
+
+			if result != it.expected {
+				t.Errorf("unmatched: actual(%d) - expected(%d)", result, it.expected)
+			}
+
+			for i := 0; i < len(it.targets); i++ {
+				if it.targets[i] != it.expectShifted[i] {
+					t.Errorf(
+						"unmatched at(%d): actual(%d) - expected(%d)",
+						i, it.targets[i], it.expectShifted[i],
+					)
+				}
+			}
+		})
+	}
+}
+
 func TestPush(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -419,6 +494,36 @@ func TestPush(t *testing.T) {
 			for i := range it.expected {
 				if it.targets[i] != it.expected[i] {
 					t.Error("unmatched value")
+				}
+			}
+		})
+	}
+}
+
+func TestUnShift(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		add      []int
+		expected []int
+	}{
+		{"Test should update array", []int{1, 2, 3}, []int{4, 5}, []int{4, 5, 1, 2, 3}},
+		{"Test 0 length added", []int{1, 2, 3}, []int{}, []int{1, 2, 3}},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			n := tslice.UnShift(&it.targets, it.add...)
+			if n != len(it.expected) {
+				t.Errorf("unmatched size: actual(%d) - expected(%d)", n, len(it.expected))
+			}
+
+			for i := range it.expected {
+				if it.targets[i] != it.expected[i] {
+					t.Errorf(
+						"unmatched at(%d): actual(%d) - expected(%d)",
+						i, it.targets[i], it.expected[i],
+					)
 				}
 			}
 		})
@@ -581,6 +686,72 @@ func TestReduceRight(t *testing.T) {
 			}
 		}
 	})
+}
+
+func TestReverse(t *testing.T) {
+	tests := []struct {
+		name     string
+		targets  []int
+		expected []int
+	}{
+		{"test 0 length case", []int{}, []int{}},
+		{"test odd reverse case", []int{1, 2, 3}, []int{3, 2, 1}},
+		{"test even reverse case", []int{1, 2, 3, 4}, []int{4, 3, 2, 1}},
+		{"test 1 length case", []int{1}, []int{1}},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			tslice.Reverse(&it.targets)
+
+			for i := 0; i < len(it.expected); i++ {
+				if it.targets[i] != it.expected[i] {
+					t.Errorf(
+						"unmatched at(%d): actual(%d) - expected(%d)",
+						i, it.targets[i], it.expected[i],
+					)
+				}
+			}
+		})
+	}
+}
+
+func TestToReversed(t *testing.T) {
+	tests := []struct {
+		name            string
+		targets         []int
+		expected        []int
+		expectedNotSort []int
+	}{
+		{"test 0 length case", []int{}, []int{}, []int{}},
+		{"test odd reverse case", []int{1, 2, 3}, []int{3, 2, 1}, []int{1, 2, 3}},
+		{"test even reverse case", []int{1, 2, 3, 4}, []int{4, 3, 2, 1}, []int{1, 2, 3, 4}},
+		{"test 1 length case", []int{1}, []int{1}, []int{1}},
+	}
+
+	for _, it := range tests {
+		t.Run(it.name, func(t *testing.T) {
+			results := tslice.ToReversed(it.targets)
+
+			for i := 0; i < len(it.expected); i++ {
+				if it.targets[i] != it.expectedNotSort[i] {
+					t.Errorf(
+						"unmatched at(%d): actual(%d) - expected(%d)",
+						i, it.targets[i], it.expected[i],
+					)
+				}
+			}
+
+			for i := 0; i < len(it.expectedNotSort); i++ {
+				if results[i] != it.expected[i] {
+					t.Errorf(
+						"unmatched at(%d): actual(%d) - expected(%d)",
+						i, results[i], it.expectedNotSort[i],
+					)
+				}
+			}
+		})
+	}
 }
 
 func TestSort(t *testing.T) {

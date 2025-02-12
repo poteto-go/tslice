@@ -80,6 +80,11 @@ func Entries[V any](dataArray []V) iter.Seq2[int, V] {
 	return slices.All(dataArray)
 }
 
+// NOTE: internal call slices.Values
+func Values[V any](dataArray []V) iter.Seq[V] {
+	return slices.Values(dataArray)
+}
+
 func Every[V any](dataArray []V, yield func(data V) bool) bool {
 	if len(dataArray) == 0 {
 		return true
@@ -177,6 +182,30 @@ func FindIndex[V any](dataArray []V, yield func(data V) bool) int {
 	return -1
 }
 
+// return -1 if not found
+func IndexOf[E comparable](dataArray []E, data E, startIndex ...int) int {
+	if len(startIndex) > 1 {
+		panic("should be len(startIndex) <= 1")
+	}
+
+	from := 0
+	if len(startIndex) == 1 {
+		from = startIndex[0]
+	}
+
+	if from >= len(dataArray) || from < 0 {
+		panic("should be 0 <= startIndex < len(dataArray)")
+	}
+
+	for i := from; i < len(dataArray); i++ {
+		if dataArray[i] == data {
+			return i
+		}
+	}
+
+	return -1
+}
+
 // NOTE: return (0, false) if not found
 func FindLast[V any](dataArray []V, yield func(data V) bool) (found V, ok bool) {
 	if len(dataArray) == 0 {
@@ -207,24 +236,13 @@ func FindLastIndex[V any](dataArray []V, yield func(data V) bool) int {
 	return -1
 }
 
-func Foreach[V any](dataArray []V, yield func(data V)) {
-	for _, data := range dataArray {
-		yield(data)
-	}
-}
-
-// NOTE: Internal call slices.Contains
-func Includes[E comparable](dataArray []E, data E) bool {
-	return slices.Contains(dataArray, data)
-}
-
 // return -1 if not found
-func IndexOf[E comparable](dataArray []E, data E, startIndex ...int) int {
+func LastIndexOf[E comparable](dataArray []E, data E, startIndex ...int) int {
 	if len(startIndex) > 1 {
 		panic("should be len(startIndex) <= 1")
 	}
 
-	from := 0
+	from := len(dataArray) - 1
 	if len(startIndex) == 1 {
 		from = startIndex[0]
 	}
@@ -233,13 +251,24 @@ func IndexOf[E comparable](dataArray []E, data E, startIndex ...int) int {
 		panic("should be 0 <= startIndex < len(dataArray)")
 	}
 
-	for i := from; i < len(dataArray); i++ {
+	for i := from; i >= 0; i-- {
 		if dataArray[i] == data {
 			return i
 		}
 	}
 
 	return -1
+}
+
+func ForEach[V any](dataArray []V, yield func(data V)) {
+	for _, data := range dataArray {
+		yield(data)
+	}
+}
+
+// NOTE: Internal call slices.Contains
+func Includes[E comparable](dataArray []E, data E) bool {
+	return slices.Contains(dataArray, data)
 }
 
 func Map[V any](dataArray []V, yield func(data V) V) []V {
@@ -268,6 +297,20 @@ func Pop[V any](dataArray *[]V) V {
 	return lastValue
 }
 
+func Shift[V any](dataArray *[]V) V {
+	if len(*dataArray) == 0 {
+		panic("should be len(dataArray) >= 1")
+	}
+
+	firstValue := (*dataArray)[0]
+
+	newArr := make([]V, len(*dataArray)-1)
+	copy(newArr, (*dataArray)[1:len(*dataArray)])
+	*dataArray = newArr
+
+	return firstValue
+}
+
 func Push[V any](dataArray *[]V, add ...V) int {
 	if len(add) == 0 {
 		return len(*dataArray)
@@ -285,6 +328,25 @@ func Push[V any](dataArray *[]V, add ...V) int {
 		n++
 	}
 	return n
+}
+
+func UnShift[V any](dataArray *[]V, add ...V) int {
+	if len(add) == 0 {
+		return len(*dataArray)
+	}
+
+	// 配列を拡張
+	newArr := make([]V, len(*dataArray)+len(add))
+	copy(newArr, *dataArray)
+	*dataArray = newArr
+
+	for i := len(*dataArray) - len(add) - 1; i >= 0; i-- {
+		(*dataArray)[i+len(add)] = (*dataArray)[i]
+	}
+
+	copy(*dataArray, add)
+
+	return len(*dataArray)
 }
 
 func Reduce[V any, T any](dataArray []V, yield func(acc T, cur V) T, acc0 ...T) T {
@@ -321,6 +383,26 @@ func ReduceRight[V any, T any](dataArray []V, yield func(acc T, cur V) T, acc0 .
 	}
 
 	return now
+}
+
+func Reverse[V any](dataArray *[]V) {
+	if len(*dataArray) == 0 {
+		return
+	}
+
+	for i := 0; i < len(*dataArray)/2; i++ {
+		rightId := len(*dataArray) - i - 1
+		(*dataArray)[i], (*dataArray)[rightId] = (*dataArray)[rightId], (*dataArray)[i]
+	}
+}
+
+func ToReversed[V any](dataArray []V) []V {
+	newArray := make([]V, len(dataArray))
+	copy(newArray, dataArray)
+
+	Reverse(&newArray)
+
+	return newArray
 }
 
 // * call w/ yield
