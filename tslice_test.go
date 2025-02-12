@@ -657,7 +657,7 @@ func TestToReversed(t *testing.T) {
 
 	for _, it := range tests {
 		t.Run(it.name, func(t *testing.T) {
-			results := tslice.ToReverse(it.targets)
+			results := tslice.ToReversed(it.targets)
 
 			for i := 0; i < len(it.expected); i++ {
 				if it.targets[i] != it.expectedNotSort[i] {
