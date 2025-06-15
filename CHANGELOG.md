@@ -2,6 +2,10 @@
 
 ## 0.4.X
 
+### 0.4.1
+
+- PATCH: fix return type of `tslice.Map` by @poteto0
+
 ### 0.4.0
 
 - FEAT: `lastIndexOf` by @poteto0 in #8
