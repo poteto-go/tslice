@@ -271,8 +271,8 @@ func Includes[E comparable](dataArray []E, data E) bool {
 	return slices.Contains(dataArray, data)
 }
 
-func Map[V any](dataArray []V, yield func(data V) V) []V {
-	transformed := make([]V, 0)
+func Map[V any, T any](dataArray []V, yield func(data V) T) []T {
+	transformed := make([]T, 0)
 	if len(dataArray) == 0 {
 		return transformed
 	}
